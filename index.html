@@ -26,6 +26,10 @@
             --shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
             --skeleton-bg: #e0e0e0;
             --skeleton-highlight: #f5f5f5;
+            --popup-primary: #2a6e3f;
+            --popup-primary-light: #3d8c55;
+            --popup-bg: #ffffff;
+            --popup-text: #1a1a1a;
         }
 
         .dark-mode {
@@ -46,6 +50,10 @@
             --shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
             --skeleton-bg: #2a2a2a;
             --skeleton-highlight: #363636;
+            --popup-primary: #3d8c55;
+            --popup-primary-light: #4da066;
+            --popup-bg: #ffffff;
+            --popup-text: #1a1a1a;
         }
         
         * {
@@ -73,6 +81,129 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+        }
+        
+        /* Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-content {
+            background: var(--popup-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            animation: popIn 0.6s ease-out;
+            transform-origin: center;
+            border: 2px solid var(--popup-primary);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .popup-header {
+            background: var(--popup-primary);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .popup-header h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .popup-body {
+            padding: 30px;
+        }
+
+        .motive-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            background: #f1f8f1;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .motive-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .motive-item .icon {
+            background: var(--popup-primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px;
+            color: white;
+            font-size: 20px;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+
+        .motive-text {
+            color: var(--popup-primary);
+            font-size: 18px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .popup-footer {
+            padding: 0 30px 30px;
+            text-align: center;
+        }
+
+        .continue-btn {
+            background: var(--popup-primary);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.4);
+        }
+
+        .continue-btn:hover {
+            background: var(--popup-primary-light);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(46, 125, 50, 0.6);
+        }
+
+        .continue-btn:active {
+            transform: translateY(0);
         }
         
         /* Skeleton Loader Styles */
@@ -629,6 +760,8 @@
         .section-title {
             text-align: center;
             margin-bottom: 60px;
+            position: relative;
+            z-index: 1;
         }
         
         .section-title h2 {
@@ -1250,7 +1383,7 @@
             }
             
             .hero-title {
-                font-size: 2.8rem;
+            font-size: 2.8rem;
             }
             
             .skeleton-hero {
@@ -1328,6 +1461,25 @@
             .skeleton-button {
                 width: 100%;
             }
+            
+            /* Popup responsive adjustments */
+            .motive-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .motive-item .icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .motive-text {
+                text-align: center;
+            }
+            
+            .motive-text {
+                font-size: 16px;
+            }
         }
         
         @media (max-width: 576px) {
@@ -1371,6 +1523,32 @@
     </style>
 </head>
 <body>
+    <!-- Popup Overlay -->
+    <div class="popup-overlay" id="motivePopup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h2>Our Motive</h2>
+            </div>
+            <div class="popup-body">
+                <div class="motive-item">
+                    <div class="icon">1</div>
+                    <div class="motive-text">TREAT DISEASES</div>
+                </div>
+                <div class="motive-item">
+                    <div class="icon">2</div>
+                    <div class="motive-text">WITH PANCHAKARMA THERAPIES</div>
+                </div>
+                <div class="motive-item">
+                    <div class="icon">3</div>
+                    <div class="motive-text">WITH ONLINE CONSULTATION</div>
+                </div>
+            </div>
+            <div class="popup-footer">
+                <button class="continue-btn" id="continueBtn">Continue</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Skeleton Loader -->
     <div class="skeleton-loader" id="skeletonLoader">
         <div class="container">
@@ -2172,6 +2350,37 @@ AHMEDABAD -07</li>
                 animateCounter('countriesCounter', 25, 2000);
                 animateCounter('experienceBadge', 21, 2000);
             }, 1500);
+        });
+
+        // Popup functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const popup = document.getElementById('motivePopup');
+            const continueBtn = document.getElementById('continueBtn');
+            
+            // Check if user has already dismissed the popup
+            const hasSeenPopup = localStorage.getItem('hasSeenMotivePopup');
+            
+            // Show popup after page loads if not seen before
+            if (!hasSeenPopup) {
+                // Wait for skeleton loader to finish
+                setTimeout(() => {
+                    popup.classList.add('active');
+                }, 2000); // 2 seconds after page load
+            }
+            
+            // Close popup when continue button is clicked
+            continueBtn.addEventListener('click', function() {
+                popup.classList.remove('active');
+                localStorage.setItem('hasSeenMotivePopup', 'true');
+            });
+            
+            // Close popup when clicking outside the content
+            popup.addEventListener('click', function(e) {
+                if (e.target === popup) {
+                    popup.classList.remove('active');
+                    localStorage.setItem('hasSeenMotivePopup', 'true');
+                }
+            });
         });
     </script>
 </body>
